@@ -3,668 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript JSON Exercises</title>
+    <title>JSON Data Processing Challenge</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
-            padding-top: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
         }
-        .exercise-card {
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-radius: 10px;
+        .challenge-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             overflow: hidden;
         }
-        .exercise-header {
-            background-color: #0d6efd;
+        .challenge-header {
+            background: linear-gradient(90deg, #2c3e50, #4ca1af);
             color: white;
-            padding: 15px 20px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 25px;
+            text-align: center;
         }
-        .exercise-body {
-            padding: 20px;
-            background-color: white;
+        .challenge-body {
+            padding: 25px;
         }
-        .code-block {
+        .scenario-box {
             background-color: #f8f9fa;
-            border-left: 4px solid #0d6efd;
+            border-left: 5px solid #4ca1af;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+        .data-box {
+            background-color: #e9ecef;
             padding: 15px;
+            border-radius: 8px;
             margin: 15px 0;
             font-family: 'Courier New', monospace;
-            white-space: pre-wrap;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
         }
-        .btn-check {
-            background-color: #198754;
-            color: white;
+        .tasks-list {
+            list-style-type: none;
+            padding-left: 0;
         }
-        .btn-check:hover {
-            background-color: #157347;
-        }
-        .result-area {
-            min-height: 100px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            padding: 10px;
-            margin-top: 15px;
-            background-color: #f8f9fa;
-        }
-        .hint {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
+        .tasks-list li {
             padding: 10px 15px;
-            margin: 10px 0;
+            margin-bottom: 10px;
+            background-color: #f1f8ff;
+            border-left: 4px solid #4dabf7;
             border-radius: 0 5px 5px 0;
         }
-        .solution-area {
+        .tasks-list li:nth-child(even) {
+            background-color: #f8f9fa;
+            border-left-color: #69db7c;
+        }
+        .code-editor {
+            width: 100%;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            margin: 15px 0;
+            resize: vertical;
+        }
+        .btn-run {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+        .btn-run:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+        .results-area {
+            min-height: 200px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f8f9fa;
             display: none;
-            margin-top: 15px;
+        }
+        .result-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: white;
+            border-left: 4px solid #4dabf7;
+        }
+        .result-item.success {
+            border-left-color: #51cf66;
+            background-color: #ebfbee;
+        }
+        .result-item.error {
+            border-left-color: #ff6b6b;
+            background-color: #fff5f5;
+        }
+        .progress-container {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .badge {
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .hint-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffd43b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center mb-4">JavaScript JSON Exercises</h1>
-        <p class="lead text-center mb-5">Practice your JSON skills with these interactive exercises. Write JavaScript code to solve each challenge.</p>
+    <div class="challenge-container">
+        <div class="challenge-header">
+            <h1>JSON Data Processing Challenge</h1>
+            <p class="lead">Process company data to generate meaningful reports</p>
+        </div>
         
-        <!-- Exercise 1: JSON Syntax -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 1: JSON Syntax</h3>
+        <div class="challenge-body">
+            <div class="scenario-box">
+                <h3>📊 Scenario: Company Data Analyst</h3>
+                <p>You're a data analyst at TechCorp Inc. Your manager has given you raw JSON data about employees, projects, and departments. You need to process this data to generate useful reports for management.</p>
             </div>
-            <div class="exercise-body">
-                <p>Create a valid JSON string representing a person with the following properties:</p>
+            
+            <h4>📁 Raw Data</h4>
+            <div class="data-box" id="rawData">
+                {/* JSON data will be inserted here by JavaScript */}
+            </div>
+            
+            <h4>🎯 Your Tasks</h4>
+            <ol class="tasks-list">
+                <li><strong>Task 1:</strong> Calculate the average salary for each department</li>
+                <li><strong>Task 2:</strong> Find employees who are working on more than 2 projects</li>
+                <li><strong>Task 3:</strong> Identify departments with above-average employee counts</li>
+                <li><strong>Task 4:</strong> Create a summary of each department's total project budget</li>
+                <li><strong>Task 5:</strong> Generate a report of employees eligible for promotion (3+ years at company)</li>
+            </ol>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <h4>💻 Your Solution</h4>
+            <p>Write JavaScript code to process the data and complete all tasks. Your code should output the results in a specific format.</p>
+            
+            <textarea class="code-editor" id="codeEditor" placeholder="// Write your JavaScript code here
+// Use the provided data variable
+// Output your results using console.log()"></textarea>
+            
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-run" id="runCode">Run Code & Check Results</button>
+                <button class="btn btn-outline-secondary" id="showHint">Show Hint</button>
+            </div>
+            
+            <div class="hint-box" id="hintBox">
+                <h5>💡 Hint</h5>
+                <p>Break down the problem into smaller steps:</p>
                 <ul>
-                    <li>name: "John Doe"</li>
-                    <li>age: 30</li>
-                    <li>isStudent: false</li>
-                    <li>hobbies: ["reading", "swimming", "coding"]</li>
+                    <li>First, parse and understand the structure of the JSON data</li>
+                    <li>Use array methods like map, filter, and reduce to process the data</li>
+                    <li>Create helper functions for each task to keep your code organized</li>
+                    <li>Remember to handle nested data structures appropriately</li>
                 </ul>
-                <div class="mb-3">
-                    <label for="jsonSyntax" class="form-label">Your JSON:</label>
-                    <textarea class="form-control" id="jsonSyntax" rows="4" placeholder='Enter your JSON string here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonSyntax()">Validate JSON</button>
-                <div class="result-area" id="result1"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> Remember that JSON requires double quotes for both keys and string values.
-                </div>
-            </div>
-        </div>
-
-        <!-- Exercise 2: JSON Parse -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 2: JSON Parse</h3>
-            </div>
-            <div class="exercise-body">
-                <p>Parse the following JSON string and extract the "email" property value:</p>
-                <div class="code-block">let jsonString = '{"name": "Alice", "age": 25, "email": "alice@example.com", "active": true}';</div>
-                <div class="mb-3">
-                    <label for="jsonParse" class="form-label">Your Code:</label>
-                    <textarea class="form-control" id="jsonParse" rows="4" placeholder='Write your JavaScript code here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonParse()">Run Code</button>
-                <div class="result-area" id="result2"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> Use JSON.parse() to convert the string to a JavaScript object.
-                </div>
-            </div>
-        </div>
-
-        <!-- Exercise 3: JSON Stringify -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 3: JSON Stringify</h3>
-            </div>
-            <div class="exercise-body">
-                <p>Convert the following JavaScript object to a JSON string:</p>
-                <div class="code-block">let person = {
-  firstName: "Bob",
-  lastName: "Smith",
-  age: 35,
-  address: {
-    street: "123 Main St",
-    city: "Anytown",
-    country: "USA"
-  }
-};</div>
-                <div class="mb-3">
-                    <label for="jsonStringify" class="form-label">Your Code:</label>
-                    <textarea class="form-control" id="jsonStringify" rows="4" placeholder='Write your JavaScript code here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonStringify()">Run Code</button>
-                <div class="result-area" id="result3"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> Use JSON.stringify() to convert the object to a JSON string.
-                </div>
-            </div>
-        </div>
-
-        <!-- Exercise 4: JSON Objects -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 4: JSON Objects</h3>
-            </div>
-            <div class="exercise-body">
-                <p>Access the nested property "model" from the following JSON object:</p>
-                <div class="code-block">let car = {
-  make: "Toyota",
-  year: 2020,
-  specs: {
-    model: "Camry",
-    engine: "2.5L",
-    transmission: "Automatic"
-  }
-};</div>
-                <div class="mb-3">
-                    <label for="jsonObjects" class="form-label">Your Code:</label>
-                    <textarea class="form-control" id="jsonObjects" rows="4" placeholder='Write your JavaScript code here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonObjects()">Run Code</button>
-                <div class="result-area" id="result4"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> Use dot notation or bracket notation to access nested properties.
-                </div>
-            </div>
-        </div>
-
-        <!-- Exercise 5: JSON Arrays -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 5: JSON Arrays</h3>
-            </div>
-            <div class="exercise-body">
-                <p>Loop through the following array of JSON objects and extract all the "name" values:</p>
-                <div class="code-block">let users = [
-  {id: 1, name: "John", role: "admin"},
-  {id: 2, name: "Jane", role: "user"},
-  {id: 3, name: "Doe", role: "user"}
-];</div>
-                <div class="mb-3">
-                    <label for="jsonArrays" class="form-label">Your Code:</label>
-                    <textarea class="form-control" id="jsonArrays" rows="4" placeholder='Write your JavaScript code here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonArrays()">Run Code</button>
-                <div class="result-area" id="result5"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> You can use a for loop, forEach, or map to iterate through the array.
-                </div>
-            </div>
-        </div>
-
-        <!-- Exercise 6: JSON Data Types -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 6: JSON Data Types</h3>
-            </div>
-            <div class="exercise-body">
-                <p>Create a JSON object that includes examples of all JSON data types:</p>
-                <ul>
-                    <li>String</li>
-                    <li>Number</li>
-                    <li>Boolean</li>
-                    <li>Array</li>
-                    <li>Object</li>
-                    <li>null</li>
-                </ul>
-                <div class="mb-3">
-                    <label for="jsonDataTypes" class="form-label">Your JSON:</label>
-                    <textarea class="form-control" id="jsonDataTypes" rows="4" placeholder='Enter your JSON object here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonDataTypes()">Validate JSON</button>
-                <div class="result-area" id="result6"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> Remember that JSON doesn't support undefined, functions, or Date objects.
-                </div>
-            </div>
-        </div>
-
-        <!-- Exercise 7: JSON Server Simulation -->
-        <div class="exercise-card">
-            <div class="exercise-header">
-                <h3>Exercise 7: JSON Server Simulation</h3>
-            </div>
-            <div class="exercise-body">
-                <p>Simulate fetching data from a server (using a setTimeout to mimic network delay) and display the user's name:</p>
-                <div class="code-block">// Simulated server response
-function fetchUserData() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve('{"id": 101, "name": "Emma", "email": "emma@example.com"}');
-    }, 1000);
-  });
-}</div>
-                <div class="mb-3">
-                    <label for="jsonServer" class="form-label">Your Code:</label>
-                    <textarea class="form-control" id="jsonServer" rows="4" placeholder='Write your JavaScript code here...'></textarea>
-                </div>
-                <button class="btn btn-check" onclick="checkJsonServer()">Run Code</button>
-                <div class="result-area" id="result7"></div>
-                <div class="hint">
-                    <strong>Hint:</strong> Use async/await or .then() to handle the Promise, then parse the JSON and extract the name.
-                </div>
-            </div>
-        </div>
-
-        <div class="text-center mt-5">
-            <button class="btn btn-outline-primary" onclick="showAllSolutions()">Show All Solutions</button>
-        </div>
-
-        <!-- Solutions Area -->
-        <div class="solution-area" id="solutions">
-            <h3 class="mt-5 mb-3">Solutions</h3>
-            
-            <div class="mb-4">
-                <h5>Exercise 1: JSON Syntax</h5>
-                <div class="code-block">{
-  "name": "John Doe",
-  "age": 30,
-  "isStudent": false,
-  "hobbies": ["reading", "swimming", "coding"]
-}</div>
+                <p><strong>Example starter code:</strong></p>
+                <pre>// Calculate average salary by department
+function avgSalaryByDept(data) {
+  // Your code here
+}</pre>
             </div>
             
-            <div class="mb-4">
-                <h5>Exercise 2: JSON Parse</h5>
-                <div class="code-block">let jsonString = '{"name": "Alice", "age": 25, "email": "alice@example.com", "active": true}';
-let obj = JSON.parse(jsonString);
-console.log(obj.email); // Output: alice@example.com</div>
-            </div>
-            
-            <div class="mb-4">
-                <h5>Exercise 3: JSON Stringify</h5>
-                <div class="code-block">let person = {
-  firstName: "Bob",
-  lastName: "Smith",
-  age: 35,
-  address: {
-    street: "123 Main St",
-    city: "Anytown",
-    country: "USA"
-  }
-};
-let jsonString = JSON.stringify(person);
-console.log(jsonString);</div>
-            </div>
-            
-            <div class="mb-4">
-                <h5>Exercise 4: JSON Objects</h5>
-                <div class="code-block">let car = {
-  make: "Toyota",
-  year: 2020,
-  specs: {
-    model: "Camry",
-    engine: "2.5L",
-    transmission: "Automatic"
-  }
-};
-console.log(car.specs.model); // Output: Camry</div>
-            </div>
-            
-            <div class="mb-4">
-                <h5>Exercise 5: JSON Arrays</h5>
-                <div class="code-block">let users = [
-  {id: 1, name: "John", role: "admin"},
-  {id: 2, name: "Jane", role: "user"},
-  {id: 3, name: "Doe", role: "user"}
-];
-
-// Using for loop
-for (let i = 0; i < users.length; i++) {
-  console.log(users[i].name);
-}
-
-// Using forEach
-users.forEach(user => {
-  console.log(user.name);
-});
-
-// Using map
-let names = users.map(user => user.name);
-console.log(names);</div>
-            </div>
-            
-            <div class="mb-4">
-                <h5>Exercise 6: JSON Data Types</h5>
-                <div class="code-block">{
-  "string": "Hello World",
-  "number": 42,
-  "boolean": true,
-  "array": [1, 2, 3],
-  "object": {"key": "value"},
-  "nullValue": null
-}</div>
-            </div>
-            
-            <div class="mb-4">
-                <h5>Exercise 7: JSON Server Simulation</h5>
-                <div class="code-block">// Using async/await
-async function displayUserName() {
-  let jsonString = await fetchUserData();
-  let user = JSON.parse(jsonString);
-  console.log(user.name); // Output: Emma
-}
-
-// Using .then()
-fetchUserData().then(jsonString => {
-  let user = JSON.parse(jsonString);
-  console.log(user.name); // Output: Emma
-});</div>
+            <div class="results-area" id="resultsArea">
+                <h4>📈 Results</h4>
+                <div id="resultsContainer">
+                    {/* Results will be inserted here by JavaScript */}
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Exercise 1: JSON Syntax
-        function checkJsonSyntax() {
-            const jsonInput = document.getElementById('jsonSyntax').value.trim();
-            const resultArea = document.getElementById('result1');
-            
-            try {
-                const obj = JSON.parse(jsonInput);
-                
-                // Check if all required properties exist
-                if (obj.name === "John Doe" && obj.age === 30 && 
-                    obj.isStudent === false && 
-                    Array.isArray(obj.hobbies) && 
-                    obj.hobbies.includes("reading") && 
-                    obj.hobbies.includes("swimming") && 
-                    obj.hobbies.includes("coding")) {
-                    resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! Your JSON is valid and contains all required properties.</div>';
-                } else {
-                    resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your JSON is valid but missing some required properties.</div>';
+        // Sample data for the challenge
+        const companyData = {
+            company: "TechCorp Inc.",
+            departments: [
+                {
+                    id: 1,
+                    name: "Engineering",
+                    budget: 500000,
+                    employees: [
+                        { id: 101, name: "Alice Johnson", salary: 85000, yearsAtCompany: 4, projects: [1, 3] },
+                        { id: 102, name: "Bob Smith", salary: 92000, yearsAtCompany: 2, projects: [1, 2, 4] },
+                        { id: 103, name: "Carol Davis", salary: 78000, yearsAtCompany: 5, projects: [3] },
+                        { id: 104, name: "David Wilson", salary: 95000, yearsAtCompany: 3, projects: [2, 4] }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Marketing",
+                    budget: 300000,
+                    employees: [
+                        { id: 201, name: "Eva Brown", salary: 65000, yearsAtCompany: 1, projects: [5] },
+                        { id: 202, name: "Frank Miller", salary: 72000, yearsAtCompany: 4, projects: [5, 6] },
+                        { id: 203, name: "Grace Lee", salary: 68000, yearsAtCompany: 2, projects: [6, 7] }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Sales",
+                    budget: 450000,
+                    employees: [
+                        { id: 301, name: "Henry Clark", salary: 70000, yearsAtCompany: 3, projects: [8, 9] },
+                        { id: 302, name: "Ivy Garcia", salary: 75000, yearsAtCompany: 6, projects: [8, 9, 10] },
+                        { id: 303, name: "Jack Martinez", salary: 68000, yearsAtCompany: 2, projects: [10] },
+                        { id: 304, name: "Karen Taylor", salary: 82000, yearsAtCompany: 4, projects: [8] },
+                        { id: 305, name: "Leo Anderson", salary: 79000, yearsAtCompany: 1, projects: [9, 10] }
+                    ]
                 }
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Invalid JSON: ' + e.message + '</div>';
-            }
-        }
+            ],
+            projects: [
+                { id: 1, name: "Website Redesign", budget: 50000, departmentId: 1 },
+                { id: 2, name: "Mobile App", budget: 75000, departmentId: 1 },
+                { id: 3, name: "Database Optimization", budget: 30000, departmentId: 1 },
+                { id: 4, name: "API Development", budget: 45000, departmentId: 1 },
+                { id: 5, name: "Social Media Campaign", budget: 25000, departmentId: 2 },
+                { id: 6, name: "Product Launch", budget: 40000, departmentId: 2 },
+                { id: 7, name: "Market Research", budget: 20000, departmentId: 2 },
+                { id: 8, name: "Client Portal", budget: 35000, departmentId: 3 },
+                { id: 9, name: "Sales Training", budget: 15000, departmentId: 3 },
+                { id: 10, name: "CRM Implementation", budget: 60000, departmentId: 3 }
+            ]
+        };
 
-        // Exercise 2: JSON Parse
-        function checkJsonParse() {
-            const codeInput = document.getElementById('jsonParse').value.trim();
-            const resultArea = document.getElementById('result2');
+        // Display the raw data in a formatted way
+        document.getElementById('rawData').textContent = JSON.stringify(companyData, null, 2);
+
+        // Set up event listeners
+        document.getElementById('runCode').addEventListener('click', runCode);
+        document.getElementById('showHint').addEventListener('click', function() {
+            const hintBox = document.getElementById('hintBox');
+            hintBox.style.display = hintBox.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Function to run the user's code and check results
+        function runCode() {
+            const userCode = document.getElementById('codeEditor').value;
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsArea = document.getElementById('resultsArea');
+            const progressBar = document.getElementById('progressBar');
+            
+            // Reset UI
+            resultsContainer.innerHTML = '';
+            resultsArea.style.display = 'block';
+            progressBar.style.width = '0%';
             
             try {
-                // Create a safe environment to run the code
-                const jsonString = '{"name": "Alice", "age": 25, "email": "alice@example.com", "active": true}';
-                
-                // Wrap the code in a function to capture console.log output
-                const wrappedCode = `
-                    (function() {
-                        let jsonString = '${jsonString}';
-                        ${codeInput}
-                    })();
-                `;
-                
                 // Capture console.log output
+                let consoleOutput = [];
                 const originalLog = console.log;
-                let output = '';
-                console.log = function(message) {
-                    output += message + '\\n';
+                console.log = function(...args) {
+                    consoleOutput.push(args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' '));
+                    originalLog.apply(console, args);
                 };
                 
-                // Execute the code
-                eval(wrappedCode);
+                // Execute user code with the data
+                eval(`
+                    const data = ${JSON.stringify(companyData)};
+                    ${userCode}
+                `);
                 
                 // Restore original console.log
                 console.log = originalLog;
                 
-                // Check if the output contains the expected email
-                if (output.includes('alice@example.com')) {
-                    resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! You successfully extracted the email.</div>';
-                } else {
-                    resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code ran but did not output the expected email.</div>';
-                }
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Error in your code: ' + e.message + '</div>';
-            }
-        }
-
-        // Exercise 3: JSON Stringify
-        function checkJsonStringify() {
-            const codeInput = document.getElementById('jsonStringify').value.trim();
-            const resultArea = document.getElementById('result3');
-            
-            try {
-                // Create the person object for the exercise
-                const person = {
-                    firstName: "Bob",
-                    lastName: "Smith",
-                    age: 35,
-                    address: {
-                        street: "123 Main St",
-                        city: "Anytown",
-                        country: "USA"
-                    }
-                };
-                
-                // Wrap the code in a function to capture console.log output
-                const wrappedCode = `
-                    (function() {
-                        let person = ${JSON.stringify(person)};
-                        ${codeInput}
-                    })();
-                `;
-                
-                // Capture console.log output
-                const originalLog = console.log;
-                let output = '';
-                console.log = function(message) {
-                    output += message + '\\n';
-                };
-                
-                // Execute the code
-                eval(wrappedCode);
-                
-                // Restore original console.log
-                console.log = originalLog;
-                
-                // Check if the output is a valid JSON string representing the person object
-                if (output.trim()) {
-                    try {
-                        const parsed = JSON.parse(output.trim());
-                        if (parsed.firstName === "Bob" && parsed.lastName === "Smith") {
-                            resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! You successfully converted the object to JSON.</div>';
-                        } else {
-                            resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code produced JSON but it doesn\'t match the expected structure.</div>';
-                        }
-                    } catch (e) {
-                        resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code output something but it\'s not valid JSON.</div>';
-                    }
-                } else {
-                    resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code ran but produced no output.</div>';
-                }
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Error in your code: ' + e.message + '</div>';
-            }
-        }
-
-        // Exercise 4: JSON Objects
-        function checkJsonObjects() {
-            const codeInput = document.getElementById('jsonObjects').value.trim();
-            const resultArea = document.getElementById('result4');
-            
-            try {
-                // Create the car object for the exercise
-                const car = {
-                    make: "Toyota",
-                    year: 2020,
-                    specs: {
-                        model: "Camry",
-                        engine: "2.5L",
-                        transmission: "Automatic"
-                    }
-                };
-                
-                // Wrap the code in a function to capture console.log output
-                const wrappedCode = `
-                    (function() {
-                        let car = ${JSON.stringify(car)};
-                        ${codeInput}
-                    })();
-                `;
-                
-                // Capture console.log output
-                const originalLog = console.log;
-                let output = '';
-                console.log = function(message) {
-                    output += message + '\\n';
-                };
-                
-                // Execute the code
-                eval(wrappedCode);
-                
-                // Restore original console.log
-                console.log = originalLog;
-                
-                // Check if the output contains "Camry"
-                if (output.includes('Camry')) {
-                    resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! You successfully accessed the model property.</div>';
-                } else {
-                    resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code ran but did not output the expected model.</div>';
-                }
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Error in your code: ' + e.message + '</div>';
-            }
-        }
-
-        // Exercise 5: JSON Arrays
-        function checkJsonArrays() {
-            const codeInput = document.getElementById('jsonArrays').value.trim();
-            const resultArea = document.getElementById('result5');
-            
-            try {
-                // Create the users array for the exercise
-                const users = [
-                    {id: 1, name: "John", role: "admin"},
-                    {id: 2, name: "Jane", role: "user"},
-                    {id: 3, name: "Doe", role: "user"}
-                ];
-                
-                // Wrap the code in a function to capture console.log output
-                const wrappedCode = `
-                    (function() {
-                        let users = ${JSON.stringify(users)};
-                        ${codeInput}
-                    })();
-                `;
-                
-                // Capture console.log output
-                const originalLog = console.log;
-                let output = '';
-                console.log = function(message) {
-                    output += message + '\\n';
-                };
-                
-                // Execute the code
-                eval(wrappedCode);
-                
-                // Restore original console.log
-                console.log = originalLog;
-                
-                // Check if the output contains all three names
-                if (output.includes('John') && output.includes('Jane') && output.includes('Doe')) {
-                    resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! You successfully extracted all names.</div>';
-                } else {
-                    resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code ran but did not output all expected names.</div>';
-                }
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Error in your code: ' + e.message + '</div>';
-            }
-        }
-
-        // Exercise 6: JSON Data Types
-        function checkJsonDataTypes() {
-            const jsonInput = document.getElementById('jsonDataTypes').value.trim();
-            const resultArea = document.getElementById('result6');
-            
-            try {
-                const obj = JSON.parse(jsonInput);
-                
-                // Check if all data types are present
-                const hasString = typeof obj.string === 'string';
-                const hasNumber = typeof obj.number === 'number';
-                const hasBoolean = typeof obj.boolean === 'boolean';
-                const hasArray = Array.isArray(obj.array);
-                const hasObject = typeof obj.object === 'object' && obj.object !== null && !Array.isArray(obj.object);
-                const hasNull = obj.nullValue === null;
-                
-                if (hasString && hasNumber && hasBoolean && hasArray && hasObject && hasNull) {
-                    resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! Your JSON includes all required data types.</div>';
-                } else {
-                    let missing = [];
-                    if (!hasString) missing.push('string');
-                    if (!hasNumber) missing.push('number');
-                    if (!hasBoolean) missing.push('boolean');
-                    if (!hasArray) missing.push('array');
-                    if (!hasObject) missing.push('object');
-                    if (!hasNull) missing.push('null');
+                // Display the output
+                if (consoleOutput.length > 0) {
+                    consoleOutput.forEach(output => {
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'result-item';
+                        resultItem.innerHTML = `<pre>${output}</pre>`;
+                        resultsContainer.appendChild(resultItem);
+                    });
                     
-                    resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your JSON is valid but missing: ' + missing.join(', ') + '</div>';
-                }
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Invalid JSON: ' + e.message + '</div>';
-            }
-        }
-
-        // Exercise 7: JSON Server Simulation
-        function checkJsonServer() {
-            const codeInput = document.getElementById('jsonServer').value.trim();
-            const resultArea = document.getElementById('result7');
-            
-            try {
-                // Create the fetchUserData function for the exercise
-                const fetchUserData = `
-                    function fetchUserData() {
-                        return new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve('{"id": 101, "name": "Emma", "email": "emma@example.com"}');
-                            }, 100);
-                        });
-                    }
-                `;
-                
-                // Wrap the code in a function to capture console.log output
-                const wrappedCode = `
-                    (async function() {
-                        ${fetchUserData}
-                        ${codeInput}
-                    })();
-                `;
-                
-                // Capture console.log output
-                const originalLog = console.log;
-                let output = '';
-                console.log = function(message) {
-                    output += message + '\\n';
-                };
-                
-                // Execute the code with a timeout to handle async operations
-                eval(wrappedCode);
-                
-                // Wait a bit for the async code to complete
-                setTimeout(() => {
-                    // Restore original console.log
-                    console.log = originalLog;
+                    // Simple progress indicator based on output length
+                    const progress = Math.min(consoleOutput.length * 20, 100);
+                    progressBar.style.width = `${progress}%`;
                     
-                    // Check if the output contains "Emma"
-                    if (output.includes('Emma')) {
-                        resultArea.innerHTML = '<div class="alert alert-success">✓ Correct! You successfully handled the async operation and extracted the name.</div>';
-                    } else {
-                        resultArea.innerHTML = '<div class="alert alert-warning">⚠ Your code ran but did not output the expected name.</div>';
+                    // Check if all tasks might be completed
+                    if (consoleOutput.length >= 5) {
+                        const completionMsg = document.createElement('div');
+                        completionMsg.className = 'result-item success';
+                        completionMsg.innerHTML = '<strong>✅ Great job! You\'ve completed all tasks.</strong>';
+                        resultsContainer.appendChild(completionMsg);
                     }
-                }, 200);
-            } catch (e) {
-                resultArea.innerHTML = '<div class="alert alert-danger">✗ Error in your code: ' + e.message + '</div>';
+                } else {
+                    resultsContainer.innerHTML = '<div class="result-item error">No output detected. Make sure to use console.log() to display your results.</div>';
+                }
+                
+            } catch (error) {
+                resultsContainer.innerHTML = `<div class="result-item error"><strong>Error:</strong> ${error.message}</div>`;
             }
         }
 
-        // Show all solutions
-        function showAllSolutions() {
-            document.getElementById('solutions').style.display = 'block';
-        }
+        // Add example code to the editor
+        document.getElementById('codeEditor').value = `// Example starter code - Complete the functions below
+
+// Task 1: Calculate average salary by department
+function calculateAvgSalaryByDept(data) {
+  const result = {};
+  // Your code here
+  return result;
+}
+
+// Task 2: Find employees working on more than 2 projects
+function findBusyEmployees(data) {
+  const busyEmployees = [];
+  // Your code here
+  return busyEmployees;
+}
+
+// Task 3: Identify departments with above-average employee counts
+function findLargeDepartments(data) {
+  const largeDepts = [];
+  // Your code here
+  return largeDepts;
+}
+
+// Task 4: Create department project budget summary
+function departmentBudgetSummary(data) {
+  const summary = {};
+  // Your code here
+  return summary;
+}
+
+// Task 5: Find employees eligible for promotion (3+ years at company)
+function findPromotionEligible(data) {
+  const eligible = [];
+  // Your code here
+  return eligible;
+}
+
+// Run your functions and display results
+console.log("=== Task 1: Average Salary by Department ===");
+console.log(calculateAvgSalaryByDept(data));
+
+console.log("\\\\n=== Task 2: Employees with >2 Projects ===");
+console.log(findBusyEmployees(data));
+
+console.log("\\\\n=== Task 3: Departments with Above-Average Size ===");
+console.log(findLargeDepartments(data));
+
+console.log("\\\\n=== Task 4: Department Budget Summary ===");
+console.log(departmentBudgetSummary(data));
+
+console.log("\\\\n=== Task 5: Promotion-Eligible Employees ===");
+console.log(findPromotionEligible(data));
+`;
     </script>
 </body>
 </html>
